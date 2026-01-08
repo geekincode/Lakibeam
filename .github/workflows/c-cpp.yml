@@ -28,7 +28,7 @@ jobs:
         export ROS_PYTHON_VERSION=3
         sudo apt-get update
         rosdep update --rosdistro humble
-  rosdep install --from-paths src --ignore-src -y --skip-keys="libopencv-dev libopencv-contrib-dev libopencv-imgproc-dev python-opencv python3-opencv tf message_generation"
+        rosdep install --from-paths src --ignore-src -y --skip-keys="libopencv-dev libopencv-contrib-dev libopencv-imgproc-dev python-opencv python3-opencv tf message_generation"
     
     - name: Build workspace
       run: |
