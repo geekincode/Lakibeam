@@ -27,19 +27,20 @@ jobs:
         export ROS_DISTRO=humble
         export ROS_PYTHON_VERSION=3
         sudo apt-get update
-        # If rosdep doesn't map 'serial', build & install the upstream serial library from GitHub
-        # so that CMake can find the package (serialConfig.cmake) during colcon build.
-        git clone https://github.com/wjwwood/serial.git /tmp/serial || true
-        if [ -d /tmp/serial ]; then
-          mkdir -p /tmp/serial/build
-          pushd /tmp/serial/build
-          cmake .. -DCMAKE_BUILD_TYPE=Release
-          cmake --build . -- -j$(nproc) || true
-          sudo cmake --install . || true
-          popd
+        # First try the ROS packaged serial (preferred). If that fails, fall back to building from source.
+        sudo apt-get install -y ros-${ROS_DISTRO}-serial && SERIAL_OK=1 || SERIAL_OK=0
+        if [ "$SERIAL_OK" -ne 1 ]; then
+          echo "apt install ros-${ROS_DISTRO}-serial failed, attempting to build wjwwood/serial from source"
+          git clone https://github.com/wjwwood/serial.git /tmp/serial || true
+          if [ -d /tmp/serial ]; then
+            mkdir -p /tmp/serial/build
+            pushd /tmp/serial/build
+            cmake .. -DCMAKE_BUILD_TYPE=Release || true
+            cmake --build . -- -j$(nproc) || true
+            sudo cmake --install . || true
+            popd
+          fi
         fi
-        # Also try the ROS packaged serial as a fallback
-        sudo apt-get install -y ros-${ROS_DISTRO}-serial || true
         rosdep update --rosdistro humble
         # Keep 'serial' in skip-keys because rosdep mapping for 'serial' may be missing;
         # we've installed the ROS package above to satisfy find_package(serial) at build time.
