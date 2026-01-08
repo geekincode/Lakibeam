@@ -23,9 +23,12 @@ jobs:
     - name: Install dependencies with rosdep
       shell: bash
       run: |
+        source /opt/ros/humble/setup.bash
+        export ROS_DISTRO=humble
+        export ROS_PYTHON_VERSION=3
         sudo apt-get update
-        rosdep update
-        rosdep install --from-paths src --ignore-src -y --skip-keys "libopencv-dev libopencv-contrib-dev libopencv-imgproc-dev python-opencv python3-opencv"
+        rosdep update --rosdistro humble
+        rosdep install --from-paths src --ignore-src -y --skip-keys="libopencv-dev libopencv-contrib-dev libopencv-imgproc-dev python-opencv python3-opencv"
     
     - name: Build workspace
       run: |
