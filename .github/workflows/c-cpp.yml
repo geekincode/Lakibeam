@@ -31,7 +31,8 @@ jobs:
         sudo apt-get install -y ros-${ROS_DISTRO}-serial && SERIAL_OK=1 || SERIAL_OK=0
         if [ "$SERIAL_OK" -ne 1 ]; then
           echo "apt install ros-${ROS_DISTRO}-serial failed, attempting to build wjwwood/serial from source"
-          git clone https://github.com/wjwwood/serial.git /tmp/serial || true
+          # Prefer the 'ros2' branch if available (it may contain ament/CMake support).
+          git clone --branch ros2 --single-branch https://github.com/wjwwood/serial.git /tmp/serial || git clone https://github.com/wjwwood/serial.git /tmp/serial || true
           if [ -d /tmp/serial ]; then
             mkdir -p /tmp/serial/build
             pushd /tmp/serial/build
