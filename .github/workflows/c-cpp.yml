@@ -27,8 +27,12 @@ jobs:
         export ROS_DISTRO=humble
         export ROS_PYTHON_VERSION=3
         sudo apt-get update
+        # Ensure ROS serial package is present so CMake can find 'serial'
+        sudo apt-get install -y ros-${ROS_DISTRO}-serial || true
         rosdep update --rosdistro humble
-        rosdep install --from-paths src --ignore-src -y --skip-keys="libopencv-dev libopencv-contrib-dev libopencv-imgproc-dev python-opencv python3-opencv tf message_generation"
+        # Keep 'serial' in skip-keys because rosdep mapping for 'serial' may be missing;
+        # we've installed the ROS package above to satisfy find_package(serial) at build time.
+        rosdep install --from-paths src --ignore-src -y --skip-keys="libopencv-dev libopencv-contrib-dev libopencv-imgproc-dev python-opencv python3-opencv tf serial message_generation"
     
     - name: Build workspace
       run: |
