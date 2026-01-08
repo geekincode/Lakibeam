@@ -21,8 +21,7 @@
 
 
 
-  <exec_depend>pcl_conversions</exec_depend>
-  <exec_depend>pcl</exec_depend>
+  <!-- PCL not used by this package; removed to avoid rosdep lookup errors -->
 
 
   <test_depend>ament_lint_auto</test_depend>
