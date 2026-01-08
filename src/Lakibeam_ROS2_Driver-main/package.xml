@@ -15,9 +15,7 @@
   <depend>sensor_msgs</depend>
   <depend>visualization_msgs</depend>
   <depend>diagnostic_updater</depend>
-  <depend>dynamic_reconfigure</depend>
-  <depend>message_generation</depend>
-  <depend>tf</depend>
+  <!-- Removed ROS1-only deps: dynamic_reconfigure and message_generation -->
   <depend>tf2</depend>
   
 
@@ -25,7 +23,6 @@
 
   <exec_depend>pcl_conversions</exec_depend>
   <exec_depend>pcl</exec_depend>
-  <exec_depend>message_runtime</exec_depend>
 
 
   <test_depend>ament_lint_auto</test_depend>
